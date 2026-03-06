@@ -1,0 +1,4 @@
+interface:
+  display_name: "1Panel Ops"
+  short_description: "1Panel operation skill for OpenClaw, grouped by module."
+  default_prompt: "Interact with a 1Panel instance through authenticated API calls. Choose the matching module, use search/list actions before detail reads, use the implemented query paths today, and treat the reserved mutation endpoints as expansion points for future managed operations."

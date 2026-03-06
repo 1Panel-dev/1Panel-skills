@@ -1,0 +1,21 @@
+{
+  "name": "openclaw-1panel-skill",
+  "private": true,
+  "type": "module",
+  "openclaw": {
+    "extensions": [
+      "./dist/plugin.js"
+    ]
+  },
+  "bin": {
+    "openclaw-1panel": "./dist/scripts/cli.js"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.2"
+  }
+}

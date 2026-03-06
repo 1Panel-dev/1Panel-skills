@@ -1,0 +1,44 @@
+{
+  "id": "openclaw-1panel",
+  "name": "1Panel Ops",
+  "description": "1Panel API integration for OpenClaw with signed requests and module-grouped actions.",
+  "version": "0.1.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "baseUrl": {
+        "type": "string",
+        "minLength": 1
+      },
+      "apiKey": {
+        "type": "string",
+        "minLength": 1
+      },
+      "timeoutMs": {
+        "type": "integer",
+        "minimum": 1000
+      },
+      "skipTlsVerify": {
+        "type": "boolean"
+      }
+    }
+  },
+  "uiHints": {
+    "baseUrl": {
+      "label": "1Panel Base URL",
+      "placeholder": "http://192.168.1.2:9999"
+    },
+    "apiKey": {
+      "label": "1Panel API Key",
+      "sensitive": true
+    },
+    "timeoutMs": {
+      "label": "Timeout (ms)",
+      "placeholder": "30000"
+    },
+    "skipTlsVerify": {
+      "label": "Skip TLS Verify"
+    }
+  }
+}
