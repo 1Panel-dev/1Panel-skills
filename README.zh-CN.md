@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-面向 OpenClaw 的 1Panel 运维技能包，基于 TypeScript 实现。
+面向 OpenClaw、Hermes 等 Agent 运行时的 1Panel 运维技能包，基于 TypeScript 实现。
 
 ## 功能特性
 
@@ -20,17 +20,17 @@
 
 ```text
 1Panel-skills/
-├── SKILL.md                  # OpenClaw 技能说明
+├── SKILL.md                  # 技能说明
 ├── README.md                 # 英文 README
 ├── README.zh-CN.md           # 中文 README
 ├── openclaw.plugin.json      # 插件元数据
-├── plugin.ts                 # OpenClaw 插件入口（TypeScript 源码）
+├── plugin.ts                 # 插件入口（TypeScript 源码）
 ├── package.json              # Node 包元数据
 ├── tsconfig.json             # TypeScript 类型检查配置
 ├── tsconfig.build.json       # TypeScript 构建配置
 ├── agents/
 │   └── openai.yaml           # UI 元数据
-├── dist/                     # OpenClaw 与 CLI 使用的预编译产物
+├── dist/                     # 运行时与 CLI 使用的预编译产物
 │   ├── plugin.js
 │   └── scripts/
 │       ├── cli.js
@@ -57,9 +57,9 @@
 
 ## 技能说明
 
-### openclaw-1panel
+### 1panel-skills
 
-这是一个通用的 1Panel 操作技能，供 OpenClaw 调用。当前实现以查询、读取、状态校验为主，同时保留了按模块分组的写操作预留定义，后续可以继续扩展。
+这是一个通用的 1Panel 操作技能，可供 OpenClaw、Hermes 等 Agent 运行时调用。当前实现以查询、读取、状态校验为主，同时保留了按模块分组的写操作预留定义，后续可以继续扩展。
 
 #### 模块列表
 
@@ -97,13 +97,13 @@
 - `1Panel-Timestamp`
 - `1Panel-Token = md5("1panel" + API_KEY + TIMESTAMP)`
 
-### 3. 安装到 OpenClaw
+### 3. 安装到运行时
 
 推荐本地安装方式：
 
 ```bash
 mkdir -p ~/.openclaw/skills
-ln -s /path/to/1Panel-skills ~/.openclaw/skills/openclaw-1panel
+ln -s /path/to/1Panel-skills ~/.openclaw/skills/1panel-skills
 ```
 
 仓库已经包含 `dist/` 下的预编译运行产物，正常使用时不需要先手动重新构建。
@@ -150,11 +150,11 @@ node dist/scripts/cli.js run websites searchWebsites --input-json '{"page":1,"pa
 node dist/scripts/cli.js sign
 ```
 
-## 与 OpenClaw 集成
+## 运行时集成
 
 这个仓库提供两个运行时入口：
 
-- `dist/plugin.js`：OpenClaw 插件入口
+- `dist/plugin.js`：兼容运行时的插件入口
 - `dist/scripts/cli.js`：可直接执行的本地签名 CLI
 
 插件元数据定义在 `openclaw.plugin.json` 中，`package.json` 里导出了编译后的插件入口。
@@ -183,7 +183,7 @@ npm run build
 
 1. 不要把真实 API Key 提交到版本控制。
 2. 如果返回 `{"code":401,"message":"API 接口密钥错误"}`，优先检查复制的 Key 是否正确，以及 1Panel API 设置是否已经点击“确认”保存。
-3. 如果返回 IP 相关鉴权错误，检查白名单配置和 OpenClaw 运行环境的真实出口 IP。
+3. 如果返回 IP 相关鉴权错误，检查白名单配置和运行环境的真实出口 IP。
 4. 某些节点相关接口可能要求 1Panel Pro 或 XPack。
 
 ## 许可证

@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-TypeScript-based 1Panel operations skill for OpenClaw.
+TypeScript-based 1Panel operations skill for agent runtimes such as OpenClaw and Hermes.
 
 ## Features
 
@@ -20,17 +20,17 @@ TypeScript-based 1Panel operations skill for OpenClaw.
 
 ```text
 1Panel-skills/
-├── SKILL.md                  # Skill instructions for OpenClaw
+├── SKILL.md                  # Skill instructions
 ├── README.md                 # English README
 ├── README.zh-CN.md           # Chinese README
 ├── openclaw.plugin.json      # Plugin metadata
-├── plugin.ts                 # OpenClaw plugin entry (TypeScript source)
+├── plugin.ts                 # Plugin entry (TypeScript source)
 ├── package.json              # Node package metadata
 ├── tsconfig.json             # TypeScript typecheck config
 ├── tsconfig.build.json       # TypeScript build config
 ├── agents/
 │   └── openai.yaml           # UI metadata
-├── dist/                     # Prebuilt runtime files used by OpenClaw and CLI
+├── dist/                     # Prebuilt runtime files used by runtimes and CLI
 │   ├── plugin.js
 │   └── scripts/
 │       ├── cli.js
@@ -57,9 +57,9 @@ TypeScript-based 1Panel operations skill for OpenClaw.
 
 ## Skill Overview
 
-### openclaw-1panel
+### 1panel-skills
 
-General-purpose 1Panel operations skill for OpenClaw. The current implementation focuses on inspection and status-check interfaces while keeping grouped mutation endpoints reserved for future expansion.
+General-purpose 1Panel operations skill for agent runtimes. The current implementation focuses on inspection and status-check interfaces while keeping grouped mutation endpoints reserved for future expansion.
 
 #### Modules
 
@@ -97,13 +97,13 @@ General-purpose 1Panel operations skill for OpenClaw. The current implementation
 - `1Panel-Timestamp`
 - `1Panel-Token = md5("1panel" + API_KEY + TIMESTAMP)`
 
-### 3. Install into OpenClaw
+### 3. Install into a Runtime
 
 Recommended local install:
 
 ```bash
 mkdir -p ~/.openclaw/skills
-ln -s /path/to/1Panel-skills ~/.openclaw/skills/openclaw-1panel
+ln -s /path/to/1Panel-skills ~/.openclaw/skills/1panel-skills
 ```
 
 The repository already includes prebuilt runtime files under `dist/`, so normal use does not require rebuilding before loading the skill.
@@ -150,11 +150,11 @@ Print the current auth headers:
 node dist/scripts/cli.js sign
 ```
 
-## OpenClaw Integration
+## Runtime Integration
 
 This repository exposes two runtime entrypoints:
 
-- `dist/plugin.js`: OpenClaw plugin entry
+- `dist/plugin.js`: plugin entry for compatible runtimes
 - `dist/scripts/cli.js`: signed CLI for direct local execution
 
 The plugin metadata is defined in `openclaw.plugin.json`, and the package exports the compiled plugin entry through `package.json`.
@@ -183,7 +183,7 @@ npm run build
 
 1. Do not commit real API keys into version control.
 2. If you receive `{"code":401,"message":"API 接口密钥错误"}`, first verify the copied key and confirm the 1Panel API settings were saved.
-3. If you receive an IP-related auth error, verify the whitelist and the actual outbound IP of the OpenClaw runtime.
+3. If you receive an IP-related auth error, verify the whitelist and the actual outbound IP of the runtime.
 4. Some node-related endpoints may require 1Panel Pro or XPack.
 
 ## License

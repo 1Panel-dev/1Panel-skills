@@ -1,5 +1,5 @@
 {
-  "name": "openclaw-1panel-skill",
+  "name": "1panel-skills",
   "private": true,
   "type": "module",
   "openclaw": {
@@ -8,7 +8,7 @@
     ]
   },
   "bin": {
-    "openclaw-1panel": "./dist/scripts/cli.js"
+    "1panel-skills": "./dist/scripts/cli.js"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

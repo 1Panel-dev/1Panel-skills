@@ -40,8 +40,8 @@ function textResult(payload: unknown) {
 }
 
 export default {
-  id: 'openclaw-1panel',
-  name: '1Panel Ops',
+  id: '1panel-skills',
+  name: '1panel-skills',
   configSchema: {
     type: 'object',
     additionalProperties: false,
@@ -66,7 +66,7 @@ export default {
   }) {
     api.registerTool(
       {
-        name: 'openclaw_1panel',
+        name: '1panel-skills',
         description:
           'Query a 1Panel instance through signed API calls. Supports listing modules, listing actions, running a module action, or making a raw signed request.',
         parameters: {

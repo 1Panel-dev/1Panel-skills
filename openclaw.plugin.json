@@ -1,7 +1,7 @@
 {
-  "id": "openclaw-1panel",
-  "name": "1Panel Ops",
-  "description": "1Panel API integration for OpenClaw with signed requests and module-grouped actions.",
+  "id": "1panel-skills",
+  "name": "1panel-skills",
+  "description": "1Panel API integration for agent runtimes with signed requests and module-grouped actions.",
   "version": "0.1.0",
   "configSchema": {
     "type": "object",

@@ -30,14 +30,14 @@ async function main() {
     }
 }
 function printHelp() {
-    console.log(`openclaw-1panel
+    console.log(`1panel-skills
 
 Usage:
-  openclaw-1panel modules
-  openclaw-1panel actions <module>
-  openclaw-1panel sign [--base-url URL] [--api-key KEY]
-  openclaw-1panel request <METHOD> <PATH> [--body-json JSON] [--query-json JSON] [--node NODE]
-  openclaw-1panel run <module> <action> [--input-json JSON] [--input-file FILE] [--node NODE]
+  1panel-skills modules
+  1panel-skills actions <module>
+  1panel-skills sign [--base-url URL] [--api-key KEY]
+  1panel-skills request <METHOD> <PATH> [--body-json JSON] [--query-json JSON] [--node NODE]
+  1panel-skills run <module> <action> [--input-json JSON] [--input-file FILE] [--node NODE]
 
 Environment:
   ONEPANEL_BASE_URL
@@ -46,11 +46,11 @@ Environment:
   ONEPANEL_SKIP_TLS_VERIFY
 
 Examples:
-  openclaw-1panel modules
-  openclaw-1panel actions monitoring
-  openclaw-1panel request GET /api/v2/dashboard/base/os
-  openclaw-1panel run monitoring getCurrentNode
-  openclaw-1panel run websites searchWebsites --input-json '{"page":1,"pageSize":20}'
+  1panel-skills modules
+  1panel-skills actions monitoring
+  1panel-skills request GET /api/v2/dashboard/base/os
+  1panel-skills run monitoring getCurrentNode
+  1panel-skills run websites searchWebsites --input-json '{"page":1,"pageSize":20}'
 `);
 }
 function handleModules() {

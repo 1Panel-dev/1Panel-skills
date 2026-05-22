@@ -1,0 +1,148 @@
+name: Publish to ClawHub
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SemVer version to publish, for example 0.1.0"
+        required: true
+        default: "0.1.0"
+      publish:
+        description: "Set true to publish to ClawHub"
+        required: true
+        default: false
+        type: boolean
+      slug:
+        description: "ClawHub skill slug"
+        required: true
+        default: "1panel-skills"
+      display_name:
+        description: "ClawHub display name"
+        required: true
+        default: "1panel-skills"
+      tags:
+        description: "Comma-separated ClawHub tags"
+        required: true
+        default: "latest"
+      changelog:
+        description: "Optional changelog text"
+        required: false
+        default: ""
+      owner:
+        description: "Optional ClawHub publisher handle"
+        required: false
+        default: ""
+      clawscan_note:
+        description: "Optional ClawScan note"
+        required: false
+        default: "Uses network access only to call the user-configured 1Panel API."
+
+jobs:
+  publish:
+    name: Publish skill
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build runtime files
+        run: npm run build
+
+      - name: Prepare ClawHub upload folder
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          UPLOAD_DIR="$RUNNER_TEMP/1panel-skills"
+          rm -rf "$UPLOAD_DIR"
+          mkdir -p "$UPLOAD_DIR"
+
+          rsync -a \
+            --include='SKILL.md' \
+            --include='README.md' \
+            --include='README.zh-CN.md' \
+            --include='LICENSE' \
+            --include='openclaw.plugin.json' \
+            --include='package.json' \
+            --include='agents/***' \
+            --include='references/***' \
+            --include='scripts/***' \
+            --include='dist/***' \
+            --exclude='*' \
+            ./ "$UPLOAD_DIR/"
+
+          find "$UPLOAD_DIR" -maxdepth 4 -type f | sort
+
+      - name: Install ClawHub CLI
+        run: npm install -g clawhub
+
+      - name: Login to ClawHub
+        if: ${{ inputs.publish }}
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${CLAWHUB_TOKEN:-}" ]; then
+            echo "CLAWHUB_TOKEN secret is required for a real publish." >&2
+            exit 1
+          fi
+
+          clawhub login --token "$CLAWHUB_TOKEN"
+          clawhub whoami
+
+      - name: Publish skill
+        shell: bash
+        env:
+          VERSION: ${{ inputs.version }}
+          PUBLISH: ${{ inputs.publish }}
+          SLUG: ${{ inputs.slug }}
+          DISPLAY_NAME: ${{ inputs.display_name }}
+          TAGS: ${{ inputs.tags }}
+          CHANGELOG: ${{ inputs.changelog }}
+          OWNER: ${{ inputs.owner }}
+          CLAWSCAN_NOTE: ${{ inputs.clawscan_note }}
+        run: |
+          set -euo pipefail
+
+          UPLOAD_DIR="$RUNNER_TEMP/1panel-skills"
+          CMD=(
+            clawhub --no-input skill publish "$UPLOAD_DIR"
+            --slug "$SLUG"
+            --name "$DISPLAY_NAME"
+            --version "$VERSION"
+            --tags "$TAGS"
+          )
+
+          if [ -n "$CHANGELOG" ]; then
+            CMD+=(--changelog "$CHANGELOG")
+          fi
+
+          if [ -n "$OWNER" ]; then
+            CMD+=(--owner "$OWNER")
+          fi
+
+          if [ -n "$CLAWSCAN_NOTE" ]; then
+            CMD+=(--clawscan-note "$CLAWSCAN_NOTE")
+          fi
+
+          if [ "$PUBLISH" != "true" ]; then
+            printf 'Prepared ClawHub command:'
+            printf ' %q' "${CMD[@]}"
+            printf '\n'
+            echo "Set the workflow publish input to true to upload."
+            exit 0
+          fi
+
+          "${CMD[@]}"
