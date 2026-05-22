@@ -3,15 +3,14 @@ name: Publish to ClawHub
 on:
   workflow_dispatch:
     inputs:
+      site:
+        description: "ClawHub site URL"
+        required: true
+        default: "https://clawhub.ai"
       version:
-        description: "SemVer version to publish, for example 0.1.0"
+        description: "SemVer version to publish. Must be greater than the currently published version."
         required: true
-        default: "0.1.0"
-      publish:
-        description: "Set true to publish to ClawHub"
-        required: true
-        default: false
-        type: boolean
+        default: "0.0.3"
       slug:
         description: "ClawHub skill slug"
         required: true
@@ -87,9 +86,9 @@ jobs:
         run: npm install -g clawhub
 
       - name: Login to ClawHub
-        if: ${{ inputs.publish }}
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+          CLAWHUB_SITE_URL: ${{ inputs.site }}
         shell: bash
         run: |
           set -euo pipefail
@@ -99,14 +98,14 @@ jobs:
             exit 1
           fi
 
-          clawhub login --token "$CLAWHUB_TOKEN"
-          clawhub whoami
+          clawhub --site "$CLAWHUB_SITE_URL" --no-input login --token "$CLAWHUB_TOKEN"
+          clawhub --site "$CLAWHUB_SITE_URL" --no-input whoami
 
-      - name: Publish skill
+      - name: Publish skill to ClawHub
         shell: bash
         env:
+          CLAWHUB_SITE_URL: ${{ inputs.site }}
           VERSION: ${{ inputs.version }}
-          PUBLISH: ${{ inputs.publish }}
           SLUG: ${{ inputs.slug }}
           DISPLAY_NAME: ${{ inputs.display_name }}
           TAGS: ${{ inputs.tags }}
@@ -118,7 +117,7 @@ jobs:
 
           UPLOAD_DIR="$RUNNER_TEMP/1panel-skills"
           CMD=(
-            clawhub --no-input skill publish "$UPLOAD_DIR"
+            clawhub --site "$CLAWHUB_SITE_URL" --no-input skill publish "$UPLOAD_DIR"
             --slug "$SLUG"
             --name "$DISPLAY_NAME"
             --version "$VERSION"
@@ -135,14 +134,6 @@ jobs:
 
           if [ -n "$CLAWSCAN_NOTE" ]; then
             CMD+=(--clawscan-note "$CLAWSCAN_NOTE")
-          fi
-
-          if [ "$PUBLISH" != "true" ]; then
-            printf 'Prepared ClawHub command:'
-            printf ' %q' "${CMD[@]}"
-            printf '\n'
-            echo "Set the workflow publish input to true to upload."
-            exit 0
           fi
 
           "${CMD[@]}"
