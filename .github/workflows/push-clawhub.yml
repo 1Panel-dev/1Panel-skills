@@ -28,9 +28,9 @@ on:
         required: false
         default: ""
       owner:
-        description: "Optional ClawHub publisher handle"
+        description: "ClawHub publisher handle for the existing skill"
         required: false
-        default: ""
+        default: "1panel"
       clawscan_note:
         description: "Optional ClawScan note"
         required: false
