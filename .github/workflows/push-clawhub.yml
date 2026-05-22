@@ -57,7 +57,7 @@ jobs:
       - name: Build runtime files
         run: npm run build
 
-      - name: Prepare ClawHub upload folder
+      - name: Prepare ClawHub skill upload folder
         shell: bash
         run: |
           set -euo pipefail
@@ -71,14 +71,19 @@ jobs:
             --include='README.md' \
             --include='README.zh-CN.md' \
             --include='LICENSE' \
-            --include='openclaw.plugin.json' \
-            --include='package.json' \
             --include='agents/***' \
             --include='references/***' \
             --include='scripts/***' \
-            --include='dist/***' \
+            --include='dist/' \
+            --include='dist/scripts/***' \
             --exclude='*' \
             ./ "$UPLOAD_DIR/"
+
+          if find "$UPLOAD_DIR" \( -name 'openclaw.plugin.json' -o -name 'package.json' -o -name 'plugin.js' -o -name 'plugin.ts' \) -print -quit | grep -q .; then
+            echo "Upload folder contains plugin/package metadata; refusing to publish as a skill." >&2
+            find "$UPLOAD_DIR" \( -name 'openclaw.plugin.json' -o -name 'package.json' -o -name 'plugin.js' -o -name 'plugin.ts' \) -print >&2
+            exit 1
+          fi
 
           find "$UPLOAD_DIR" -maxdepth 4 -type f | sort
 

@@ -2,11 +2,6 @@
   "name": "1panel-skills",
   "private": true,
   "type": "module",
-  "openclaw": {
-    "extensions": [
-      "./dist/plugin.js"
-    ]
-  },
   "bin": {
     "1panel-skills": "./dist/scripts/cli.js"
   },

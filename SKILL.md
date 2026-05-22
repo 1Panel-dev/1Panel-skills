@@ -64,8 +64,7 @@ Use this skill to interact with a 1Panel instance through authenticated HTTP API
 
 - Prefer the CLI instead of letting the model construct signed HTTP requests itself.
 - The repository can ship prebuilt runtime files under `dist/`, so normal use should call `node dist/scripts/cli.js ...` directly without rebuilding first.
-- Run `npm run build` only after changing TypeScript source files such as `plugin.ts` or `scripts/**/*.ts`.
-- Plugin loading should target the compiled entry at `dist/plugin.js`, not the TypeScript source file.
+- Run `npm run build` only after changing TypeScript source files such as `scripts/**/*.ts`.
 - If the host runtime can execute TypeScript directly, import from [scripts/index.ts](scripts/index.ts) and call the module actions.
 - If the runtime cannot execute TypeScript directly, use the TypeScript files as the source of truth for methods, paths, query parameters, and request payload shapes.
 - The current implementation focuses on query and inspection actions; extend the reserved mutation definitions when you intentionally add managed write flows.

@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-TypeScript-based 1Panel operations skill for agent runtimes such as OpenClaw and Hermes.
+TypeScript-based 1Panel operations skill for agent runtimes such as Hermes and OpenClaw.
 
 ## Features
 
@@ -23,8 +23,6 @@ TypeScript-based 1Panel operations skill for agent runtimes such as OpenClaw and
 ├── SKILL.md                  # Skill instructions
 ├── README.md                 # English README
 ├── README.zh-CN.md           # Chinese README
-├── openclaw.plugin.json      # Plugin metadata
-├── plugin.ts                 # Plugin entry (TypeScript source)
 ├── package.json              # Node package metadata
 ├── tsconfig.json             # TypeScript typecheck config
 ├── tsconfig.build.json       # TypeScript build config
@@ -152,12 +150,11 @@ node dist/scripts/cli.js sign
 
 ## Runtime Integration
 
-This repository exposes two runtime entrypoints:
+This repository exposes one runtime entrypoint:
 
-- `dist/plugin.js`: plugin entry for compatible runtimes
 - `dist/scripts/cli.js`: signed CLI for direct local execution
 
-The plugin metadata is defined in `openclaw.plugin.json`, and the package exports the compiled plugin entry through `package.json`.
+Agent runtimes should call the CLI or use the TypeScript resources in `scripts/` as the source of truth.
 
 ## Development
 

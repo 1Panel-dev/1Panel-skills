@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-面向 OpenClaw、Hermes 等 Agent 运行时的 1Panel 运维技能包，基于 TypeScript 实现。
+面向 Hermes、OpenClaw 等 Agent 运行时的 1Panel 运维技能包，基于 TypeScript 实现。
 
 ## 功能特性
 
@@ -23,8 +23,6 @@
 ├── SKILL.md                  # 技能说明
 ├── README.md                 # 英文 README
 ├── README.zh-CN.md           # 中文 README
-├── openclaw.plugin.json      # 插件元数据
-├── plugin.ts                 # 插件入口（TypeScript 源码）
 ├── package.json              # Node 包元数据
 ├── tsconfig.json             # TypeScript 类型检查配置
 ├── tsconfig.build.json       # TypeScript 构建配置
@@ -152,12 +150,11 @@ node dist/scripts/cli.js sign
 
 ## 运行时集成
 
-这个仓库提供两个运行时入口：
+这个仓库提供一个运行时入口：
 
-- `dist/plugin.js`：兼容运行时的插件入口
 - `dist/scripts/cli.js`：可直接执行的本地签名 CLI
 
-插件元数据定义在 `openclaw.plugin.json` 中，`package.json` 里导出了编译后的插件入口。
+Agent 运行时可以调用 CLI，或者直接把 `scripts/` 下的 TypeScript 资源作为接口定义来源。
 
 ## 开发
 
